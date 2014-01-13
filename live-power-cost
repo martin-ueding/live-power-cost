@@ -47,7 +47,7 @@ def _parse_args():
     :return: Namespace with arguments.
     :rtype: Namespace
     """
-    parser = argparse.ArgumentParser(description="")
+    parser = argparse.ArgumentParser(description="Calculates the cost of the electrical power of you computer. It works with /sys/class/power_supply/BAT0 and only gets data when your laptop is discharging.")
     #parser.add_argument("args", metavar="N", type=str, nargs="*", help="Positional arguments.")
     parser.add_argument("--kwh", dest="price_per_kwh", type=float, default=0.239, help='Price of one kWh in €.')
     #parser.add_argument("--version", action="version", version="<the version>")
