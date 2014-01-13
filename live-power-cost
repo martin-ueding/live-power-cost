@@ -4,11 +4,40 @@
 # Copyright © 2014 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import os.path
 
 __docformat__ = "restructuredtext en"
 
 def main():
     options = _parse_args()
+
+    dev = '/sys/class/power_supply/BAT0'
+
+    with open(os.path.join(dev, 'voltage_now')) as f:
+        U = int(f.read()) / 1e6
+
+    with open(os.path.join(dev, 'current_now')) as f:
+        I = int(f.read()) / 1e6
+
+    P = U * I
+
+    price = 0.239 / (3600 * 1000) # € / kWh, converted to € / J
+
+    price_per_second = price * P
+    price_per_minute = price_per_second * 60
+    price_per_hour = price_per_minute * 60
+    price_per_day = price_per_hour * 24
+
+    print('{:.3g} V'.format(U))
+    print('{:.3g} A'.format(I))
+    print('{:.3g} W'.format(P))
+    print()
+    print('{:.3g} €/J'.format(price))
+    print()
+    print('{:.2g} €/s'.format(price_per_second))
+    print('{:.2g} €/min'.format(price_per_minute))
+    print('{:.2g} €/h'.format(price_per_hour))
+    print('{:.2g} €/d'.format(price_per_day))
 
 
 def _parse_args():
